@@ -36,29 +36,29 @@ export default function SignIn() {
 
         navigate('/checkout');
 
-        try {
-            // Тук добавете вашата логика за вход
-            // Пример: изпращане на заявка към вашето API
-            const response = await fetch('YOUR_API_ENDPOINT', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, username
-                }),
-            });
+        // try {
+        //     // Тук добавете вашата логика за вход
+        //     // Пример: изпращане на заявка към вашето API
+        //     const response = await fetch('YOUR_API_ENDPOINT', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({ email, username
+        //         }),
+        //     });
 
-            // if (response.ok) {
-            //     // Ако отговорът е успешен, пренасочете потребителя
-            //     navigate('/checkout');
-            // } else {
-            //     // Ако има грешка, покажете съобщение
-            //     setError("Login failed. Please check your credentials.");
-            // }
-        } catch (error) {
-            // Обработка на грешки при заявката
-            setError("An error occurred. Please try again later.");
-        }
+        //     // if (response.ok) {
+        //     //     // Ако отговорът е успешен, пренасочете потребителя
+        //     //     navigate('/checkout');
+        //     // } else {
+        //     //     // Ако има грешка, покажете съобщение
+        //     //     setError("Login failed. Please check your credentials.");
+        //     // }
+        // } catch (error) {
+        //     // Обработка на грешки при заявката
+        //     setError("An error occurred. Please try again later.");
+        // }
     };
 
     return (
