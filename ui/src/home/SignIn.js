@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,41 +14,43 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
-
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {
     const navigate = useNavigate();
+    const [error, setError] = useState(""); // Добавяне на състояние за грешки
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const email = data.get('email');
+        const password = data.get('password');
+        
+        navigate('/checkout');
 
-        // Add your login logic here
-        // If login is successful, navigate to another page
-        navigate('/checkout'); // Replace '/dashboard' with your desired path
+        try {
+            // Тук добавете вашата логика за вход
+            // Пример: изпращане на заявка към вашето API
+            const response = await fetch('YOUR_API_ENDPOINT', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            // if (response.ok) {
+            //     // Ако отговорът е успешен, пренасочете потребителя
+            //     navigate('/checkout');
+            // } else {
+            //     // Ако има грешка, покажете съобщение
+            //     setError("Login failed. Please check your credentials.");
+            // }
+        } catch (error) {
+            // Обработка на грешки при заявката
+            setError("An error occurred. Please try again later.");
+        }
     };
-
-    
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -101,6 +103,7 @@ export default function SignIn() {
                         >
                             Sign In
                         </Button>
+                        {error && <Typography color="error">{error}</Typography>} {/* Показване на съобщение за грешка */}
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
@@ -108,14 +111,13 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="./SingUp" variant="body2">
+                                <Link href="./SignUp" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>
     );
