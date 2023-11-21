@@ -4,8 +4,18 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { useSelector } from 'react-redux';
+
 
 export default function AddressForm() {
+  const user = useSelector((state) => state.user.user);
+
+  // Проверка дали user е дефиниран
+  const email = user?.email || "";
+  const username = user?.username || "";
+
+  console.log("User from Redux Store:", user);
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -19,6 +29,7 @@ export default function AddressForm() {
             name="firstName"
             label="First name"
             fullWidth
+            value={username || ""}
             autoComplete="given-name"
             variant="standard"
           />
@@ -26,10 +37,11 @@ export default function AddressForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="lastName"
-            name="lastName"
-            label="Last name"
+            id="email"
+            name="email"
+            label="Email"
             fullWidth
+            value={email || ""}
             autoComplete="family-name"
             variant="standard"
           />

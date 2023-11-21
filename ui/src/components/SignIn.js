@@ -26,12 +26,13 @@ export default function SignIn() {
 
     const dispatch = useDispatch();
     const handleSubmit = async (event) => {
+        console.log(event)
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const email = data.get('email');
-        const password = data.get('password');
+        const username = data.get('username');
         
-        dispatch(setUser(data));
+        dispatch(setUser({ email, username }));
 
         navigate('/checkout');
 
@@ -43,7 +44,8 @@ export default function SignIn() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email, username
+                }),
             });
 
             // if (response.ok) {
@@ -92,11 +94,11 @@ export default function SignIn() {
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
+                            name="username"
+                            label="Username"
+                            type="text"
+                            id="username"
+                            autoComplete="username"
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
