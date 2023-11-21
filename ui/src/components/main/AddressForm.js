@@ -19,103 +19,95 @@ export default function AddressForm() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Shipping address
+       Welcome {username}!
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="firstName"
-            name="firstName"
-            label="First name"
-            fullWidth
-            value={username || ""}
-            autoComplete="given-name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="email"
-            name="email"
-            label="Email"
-            fullWidth
-            value={email || ""}
-            autoComplete="family-name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="address1"
-            name="address1"
-            label="Address line 1"
-            fullWidth
-            autoComplete="shipping address-line1"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="address2"
-            name="address2"
-            label="Address line 2"
-            fullWidth
-            autoComplete="shipping address-line2"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="city"
-            name="city"
-            label="City"
-            fullWidth
-            autoComplete="shipping address-level2"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="state"
-            name="state"
-            label="State/Province/Region"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="zip"
-            name="zip"
-            label="Zip / Postal code"
-            fullWidth
-            autoComplete="shipping postal-code"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="country"
-            name="country"
-            label="Country"
-            fullWidth
-            autoComplete="shipping country"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Use this address for payment details"
-          />
-        </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="age"
+          name="age"
+          label="Age"
+          fullWidth
+          variant="standard"
+        />
       </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="gender"
+          name="gender"
+          label="Gender"
+          select
+          fullWidth
+          variant="standard"
+          SelectProps={{
+            native: true,
+          }}
+        >
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </TextField>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="weight"
+          name="weight"
+          label="Weight (kg)"
+          fullWidth
+          variant="standard"
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="height"
+          name="height"
+          label="Height (cm)"
+          fullWidth
+          variant="standard"
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          required
+          id="activityLevel"
+          name="activityLevel"
+          label="Activity Level"
+          select
+          fullWidth
+          variant="standard"
+          SelectProps={{
+            native: true,
+          }}
+        >
+          <option value="sedentary">Sedentary (little or no exercise)</option>
+          <option value="light">Lightly active (light exercise/sports 1-3 days/week)</option>
+          <option value="moderate">Moderately active (moderate exercise/sports 3-5 days/week)</option>
+          <option value="active">Very active (hard exercise/sports 6-7 days a week)</option>
+          <option value="extra">Extra active (very hard exercise/sports & physical job)</option>
+        </TextField>
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          required
+          id="weightGoal"
+          name="weightGoal"
+          label="Weight Goal"
+          select
+          fullWidth
+          variant="standard"
+          SelectProps={{
+            native: true,
+          }}
+        >
+          <option value="maintain">Maintain Weight</option>
+          <option value="lose">Lose Weight</option>
+          <option value="gain">Gain Weight</option>
+        </TextField>
+      </Grid>
+    </Grid>
     </React.Fragment>
   );
 }

@@ -17,7 +17,7 @@ import Review from './Review';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Calorie Calculator', 'Payment details', 'Review your order'];
 
 function getStepContent(step) {
   switch (step) {
@@ -53,20 +53,28 @@ export default function Checkout() {
         sx={{
           position: 'relative',
           borderBottom: (t) => `1px solid ${t.palette.divider}`,
+          backgroundColor: '#e5f3ff'
         }}
       >
         <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            Company name
+          <Typography variant="h6"  color="#1976D2" noWrap>
+            Healthy & Fit
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component="h1" variant="h4" align="center">
-            Checkout
-          </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+      <Container component="main" maxWidth="sm" sx={{ mb: 4, backgroundColor: '#ffffff' }}>
+      <Paper variant="outlined" sx={{ 
+        my: { xs: 3, md: 6 }, 
+        p: { xs: 2, md: 3 },
+        backgroundColor: '#fcfdff', // lighter shade of AppBar color
+        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.1)' // soft shadow
+        }}>
+
+     <Typography component="h1" variant="h4" align="center" color="#1976D2">
+            Free Health & Fitness Calculator
+     </Typography>
+
+     <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5, color: '#1976D2' }}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -97,7 +105,7 @@ export default function Checkout() {
                 <Button
                   variant="contained"
                   onClick={handleNext}
-                  sx={{ mt: 3, ml: 1 }}
+                  sx={{ mt: 3, ml: 1, backgroundColor: '#1976D2', color: 'white' }} // using the teal color
                 >
                   {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                 </Button>
