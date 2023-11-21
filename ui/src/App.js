@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import SignIn from './home/SignIn';
-import SignUp from './home/SignUp';
-import Checkout from './home/main/Checkout';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
+import Checkout from './components/main/Checkout';
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './redux/store';
 
 function App() {
   return (

@@ -2,7 +2,7 @@ const initialState = {
   user: null,
 };
 
-function userReducer(state = initialState, action) {
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_USER':
       return {
@@ -12,6 +12,6 @@ function userReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
 
 export default userReducer;
