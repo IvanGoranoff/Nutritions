@@ -17,6 +17,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // Създаване на store с rootReducer и middleware
 const store = createStore(
   rootReducer,
+  userReducer,
   composeEnhancers(
     applyMiddleware(logger)
   )

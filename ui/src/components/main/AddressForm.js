@@ -7,6 +7,13 @@ import Paper from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
+
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserData } from '../../redux/actions/userActions';
 import axios from 'axios';
@@ -30,61 +37,51 @@ export default function AddressForm() {
     gender: '',
     weight: '',
     height: '',
-    activityLevel: '',
-    weightGoal: '',
+    activitylevel: '',
   });
 
-  const fetchData = async () => {
-    const options = {
-      method: 'GET',
-      url: 'https://fitness-calculator.p.rapidapi.com/dailycalorie',
-      params: {
-        age: '25',
-        gender: 'male',
-        height: '180',
-        weight: '70',
-        activitylevel: 'level_1'
-      },
-      headers: {
-        'X-RapidAPI-Key': '85c56330a1mshd8b18d49a34d3c1p19041fjsn27857330e68f',
-        'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
-      }
-    };
+  const activitylevelMapping = {
+    'sedentary': 'level_1',
+    'light': 'level_2',
+    'moderate': 'level_3',
+    'active': 'level_4',
+    'extra': 'level_5',
+  };
+  
+ 
 
+  const calculateCalories = async () => {
+    const data = {
+      ...formData,
+      activitylevel: activitylevelMapping[formData.activitylevel] || formData.activitylevel,
+    };
+    console.log("Sending data to API:", data);
+  
     try {
-      const response = await axios.request(options);
-      console.log(response.data);
+      const response = await Calories(data);
+      console.log("API Response:", response);
+      if (response && response.calories) {
+        setCalculatedCalories(response.calories);
+        setCalText(true);
+        dispatch(updateUserData({calories: response.calories}))
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error in calculateCalories:", error);
     }
   };
-
-  const calculateCalories = () => {
-    // Тук добавете вашата логика за изчисляване на калориите
-    // Пример: setCalculatedCalories(изчислени калории);
-    setCalculatedCalories(2000); // Примерна стойност
-    setCalText(true);
-
-
-
-    Calories(formData)
-
-  };
-
-
-
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (event) => {
-    console.log(formData);
-
     event.preventDefault();
     dispatch(updateUserData(formData));
     console.log(formData);
     calculateCalories();
+    setCalText(true);
+
   };
 
 
@@ -104,30 +101,26 @@ export default function AddressForm() {
             name="age"
             label="Age"
             fullWidth
-            variant="standard"
+            variant="outlined"
             value={formData.age}
             onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
+        <FormControl fullWidth required variant="outlined">
+        <InputLabel id="gender-label">Gender</InputLabel>
+        <Select
+            labelId="gender-label"
             id="gender"
             name="gender"
-            label="Gender"
-            select
-            fullWidth
-            variant="standard"
             value={formData.gender}
             onChange={handleChange}
-            SelectProps={{ native: true }}
-          >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </TextField>
+            label="Gender"
+        >
+            <MenuItem value="male">Male</MenuItem>
+            <MenuItem value="female">Female</MenuItem>
+        </Select>
+        </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -139,7 +132,7 @@ export default function AddressForm() {
             name="weight"
             label="Weight (kg)"
             fullWidth
-            variant="standard"
+            variant="outlined"
             value={formData.weight}
             onChange={handleChange}
           />
@@ -154,35 +147,31 @@ export default function AddressForm() {
             name="height"
             label="Height (cm)"
             fullWidth
-            variant="standard"
+            variant="outlined"
             value={formData.height}
             onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-            id="activityLevel"
-            name="activityLevel"
-            label="Activity Level"
-            select
-            fullWidth
-            variant="standard"
-            value={formData.activityLevel}
-            onChange={handleChange}
-            SelectProps={{ native: true }}
-          >
-            <option value="sedentary">Sedentary (little or no exercise)</option>
-            <option value="light">Lightly active (light exercise/sports 1-3 days/week)</option>
-            <option value="moderate">Moderately active (moderate exercise/sports 3-5 days/week)</option>
-            <option value="active">Very active (hard exercise/sports 6-7 days a week)</option>
-            <option value="extra">Extra active (very hard exercise/sports & physical job)</option>
-          </TextField>
+            <FormControl fullWidth required variant="outlined">
+            <InputLabel id="activitylevel-label">Activity Level</InputLabel>
+            <Select
+                labelId="activitylevel-label"
+                id="activitylevel"
+                name="activitylevel"
+                value={formData.activitylevel}
+                onChange={handleChange}
+                label="Activity Level"
+            >
+                <MenuItem value="level_1">Sedentary (little or no exercise)</MenuItem>
+                <MenuItem value="level_2">Lightly active (light exercise/sports 1-3 days/week)</MenuItem>
+                <MenuItem value="level_3">Moderately active (moderate exercise/sports 3-5 days/week)</MenuItem>
+                <MenuItem value="level_4">Very active (hard exercise/sports 6-7 days a week)</MenuItem>
+                <MenuItem value="level_5">Extra active (very hard exercise/sports & physical job)</MenuItem>
+            </Select>
+            </FormControl>
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <TextField
             required
             InputLabelProps={{
@@ -202,15 +191,23 @@ export default function AddressForm() {
             <option value="lose">Lose Weight</option>
             <option value="gain">Gain Weight</option>
           </TextField>
-        </Grid>
+        </Grid> */}
       </Grid>
       <Button type="submit" variant="contained" color="primary" sx={{ mt: 3 }}>
         Calculate Calories
       </Button>
       {calText && (
-        <Typography variant="subtitle1" sx={{ mt: 2 }}>
-          Your optimal calories based on your stats and goal are: {calculatedCalories} kcal
-        </Typography>
+       <>
+       <Typography variant="subtitle1" sx={{ mt: 2 }}>
+         Your optimal calories based on your stats and goal are: {calculatedCalories} kcal . Choose a plan below to get started!
+       </Typography>
+   
+       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-around' }}>
+         <Button variant="outlined" color="primary">Maintain</Button>
+         <Button variant="outlined" color="primary">Weight Loss</Button>
+         <Button variant="outlined" color="primary">Weight Gain</Button>
+       </Box>
+     </>
       )}
 
     </form>
