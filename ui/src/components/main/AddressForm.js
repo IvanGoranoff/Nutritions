@@ -8,7 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserData } from '../../redux/actions/userActions'; 
+import { updateUserData } from '../../redux/actions/userActions';
 import axios from 'axios';
 
 
@@ -21,7 +21,7 @@ export default function AddressForm() {
   const [calText, setCalText] = useState(false);
   const [calculatedCalories, setCalculatedCalories] = useState(0);
 
-  
+
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -33,13 +33,45 @@ export default function AddressForm() {
     weightGoal: '',
   });
 
+  const fetchData = async () => {
+    const options = {
+      method: 'GET',
+      url: 'https://fitness-calculator.p.rapidapi.com/dailycalorie',
+      params: {
+        age: '25',
+        gender: 'male',
+        height: '180',
+        weight: '70',
+        activitylevel: 'level_1'
+      },
+      headers: {
+        'X-RapidAPI-Key': '85c56330a1mshd8b18d49a34d3c1p19041fjsn27857330e68f',
+        'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
+      }
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const calculateCalories = () => {
     // Тук добавете вашата логика за изчисляване на калориите
     // Пример: setCalculatedCalories(изчислени калории);
     setCalculatedCalories(2000); // Примерна стойност
     setCalText(true);
+
+
+
+    fetchData()
+
   };
-  
+
+
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -57,15 +89,15 @@ export default function AddressForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-    <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom>
         Welcome {user?.username || ""}!
       </Typography>
       <Grid container spacing={3}>
-      <Grid item xs={12} sm={6}>
-         <TextField
+        <Grid item xs={12} sm={6}>
+          <TextField
             required
-              InputLabelProps={{
-               shrink: true,
+            InputLabelProps={{
+              shrink: true,
             }}
             id="age"
             name="age"
@@ -79,8 +111,8 @@ export default function AddressForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-              InputLabelProps={{
-               shrink: true,
+            InputLabelProps={{
+              shrink: true,
             }}
             id="gender"
             name="gender"
@@ -99,8 +131,8 @@ export default function AddressForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-              InputLabelProps={{
-               shrink: true,
+            InputLabelProps={{
+              shrink: true,
             }}
             id="weight"
             name="weight"
@@ -114,8 +146,8 @@ export default function AddressForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-              InputLabelProps={{
-               shrink: true,
+            InputLabelProps={{
+              shrink: true,
             }}
             id="height"
             name="height"
@@ -129,8 +161,8 @@ export default function AddressForm() {
         <Grid item xs={12}>
           <TextField
             required
-              InputLabelProps={{
-               shrink: true,
+            InputLabelProps={{
+              shrink: true,
             }}
             id="activityLevel"
             name="activityLevel"
@@ -152,8 +184,8 @@ export default function AddressForm() {
         <Grid item xs={12}>
           <TextField
             required
-              InputLabelProps={{
-               shrink: true,
+            InputLabelProps={{
+              shrink: true,
             }}
             id="weightGoal"
             name="weightGoal"
@@ -175,12 +207,12 @@ export default function AddressForm() {
         Calculate Calories
       </Button>
       {calText && (
-      <Typography variant="subtitle1" sx={{ mt: 2 }}>
-        Your optimal calories based on your stats and goal are: {calculatedCalories} kcal
-      </Typography>
-    )}
+        <Typography variant="subtitle1" sx={{ mt: 2 }}>
+          Your optimal calories based on your stats and goal are: {calculatedCalories} kcal
+        </Typography>
+      )}
 
     </form>
-    
+
   );
 }
