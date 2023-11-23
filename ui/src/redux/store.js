@@ -1,25 +1,41 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import rootReducer from './reducers/rootReducer';
 import { createLogger } from 'redux-logger';
-import rootReducer from './reducers/rootReducer.js'; // Импортирайте вашите reducers тук
-import userReducer from './reducers/userReducer.js'; // Импортирайте вашите reducers
+import thunk from 'redux-thunk';
 
-// Създаване на logger middleware
-const logger = createLogger({
-  // Опции за персонализиране на logger
-  collapsed: true, // Сгъва логовете в конзолата
-  duration: true,  // Показва времетраенето на действията
-  diff: true       // Показва разликата между предишното и следващото състояние
-});
+// Custom step logger middleware
+let stepCounter = 0;
 
-// Използване на Redux DevTools, ако са налични
+const stepLoggerMiddleware = store => next => action => {
+  stepCounter++;
+  console.log(`Step ${stepCounter}:`, action);
+
+  const result = next(action);
+
+  console.log(`New State after Step ${stepCounter}:`, store.getState());
+  return result;
+};
+
+const errorHandlingMiddleware = store => next => action => {
+  try {
+    return next(action);
+  } catch (e) {
+    console.error('Caught an exception!', e);
+    // Optionally dispatch a separate action for errors
+    // store.dispatch({ type: 'ERROR', payload: e });
+    throw e; // re-throw the error
+  }
+};
+
+// const logger = createLogger({
+// });
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-// Създаване на store с rootReducer и middleware
 const store = createStore(
   rootReducer,
-  userReducer,
   composeEnhancers(
-    applyMiddleware(logger)
+    applyMiddleware(thunk, stepLoggerMiddleware, errorHandlingMiddleware,)
   )
 );
 
