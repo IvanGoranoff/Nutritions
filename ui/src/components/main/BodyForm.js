@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
@@ -14,14 +14,17 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+//redux
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserData } from '../../redux/actions/userActions';
+import { updateFormData, updateCalorieData } from '../../redux/actions/formActions';
+import { updateUserData, } from '../../redux/actions/userActions'; // ьImport updateCalorieData
+
 import axios from 'axios';
 import { Calories } from '../../requests';
 
-
-export default function AddressForm() {
+export default function BodyForm() {
     const user = useSelector((state) => state.user.user);
+
 
     // Проверка дали user е дефиниран
     const email = user?.email || "";
@@ -31,6 +34,7 @@ export default function AddressForm() {
 
 
     const dispatch = useDispatch();
+    const formDataFromStore = useSelector((state) => state.form.formData); // Извличане на данните от store
 
     const [formData, setFormData] = useState({
         age: '',
@@ -48,7 +52,11 @@ export default function AddressForm() {
         'extra': 'level_5',
     };
 
-
+    useEffect(() => {
+        if (formDataFromStore) {
+            setFormData(formDataFromStore);
+        }
+    }, [formDataFromStore]);
 
     const calculateCalories = async () => {
         const data = {
@@ -67,17 +75,22 @@ export default function AddressForm() {
 
                 // Dispatching the entire response data
                 dispatch(updateUserData({ calories: response?.data?.goals }));
+                dispatch(updateCalorieData(calculatedCalories));
+
                 setCalText(true);
             }
         } catch (error) {
             console.error("Error in calculateCalories:", error);
         }
+
     };
 
-    console.log(calculatedCalories)
+    // Dispatching form data
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
+        const newFormData = { ...formData, [name]: value };
+        setFormData(newFormData);
+        dispatch(updateFormData(newFormData));
     };
 
     const handleSubmit = (event) => {
@@ -107,7 +120,7 @@ export default function AddressForm() {
                         label="Age"
                         fullWidth
                         variant="outlined"
-                        value={formData.age}
+                        value={formData.age || ''}
                         onChange={handleChange}
                     />
                 </Grid>
@@ -118,7 +131,7 @@ export default function AddressForm() {
                             labelId="gender-label"
                             id="gender"
                             name="gender"
-                            value={formData.gender}
+                            value={formData.gender || ''}
                             onChange={handleChange}
                             label="Gender"
                         >
@@ -138,7 +151,7 @@ export default function AddressForm() {
                         label="Weight (kg)"
                         fullWidth
                         variant="outlined"
-                        value={formData.weight}
+                        value={formData.weight || ''}
                         onChange={handleChange}
                     />
                 </Grid>
@@ -153,7 +166,7 @@ export default function AddressForm() {
                         label="Height (cm)"
                         fullWidth
                         variant="outlined"
-                        value={formData.height}
+                        value={formData.height || ''}
                         onChange={handleChange}
                     />
                 </Grid>
@@ -164,7 +177,7 @@ export default function AddressForm() {
                             labelId="activitylevel-label"
                             id="activitylevel"
                             name="activitylevel"
-                            value={formData.activitylevel}
+                            value={formData.activitylevel || ''}
                             onChange={handleChange}
                             label="Activity Level"
                         >
@@ -206,11 +219,7 @@ export default function AddressForm() {
                     <Typography variant="subtitle1" sx={{ mt: 2 }}>
                         Your optimal calories for maintaining weight based on your stats are:  {calculatedCalories.toFixed(2)} cal.
                     </Typography>
-                    {/* <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-around' }}>
-                        <Button variant="outlined" color="primary">Maintain</Button>
-                        <Button variant="outlined" color="primary">Weight Loss</Button>
-                        <Button variant="outlined" color="primary">Weight Gain</Button>
-                    </Box> */}
+
                 </>
             )}
 

@@ -1,0 +1,4 @@
+{
+    "terminal.integrated.sendKeybindingsToShell": false,
+    "terminal.integrated.confirmOnExit": "never"
+}

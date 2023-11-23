@@ -11,20 +11,20 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
+import BodyForm from './BodyForm';
+import MealForm from './MealForm';
 import Review from './Review';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-const steps = ['Calorie Calculator', 'Payment details', 'Review your order'];
+const steps = ['Calorie Calculator', 'Meal planner', 'Review your plan'];
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return <BodyForm />;
     case 1:
-      return <PaymentForm />;
+      return <MealForm />;
     case 2:
       return <Review />;
     default:
@@ -57,24 +57,24 @@ export default function Checkout() {
         }}
       >
         <Toolbar>
-          <Typography variant="h6"  color="#1976D2" noWrap>
+          <Typography variant="h6" color="#1976D2" noWrap>
             Healthy & Fit
           </Typography>
         </Toolbar>
       </AppBar>
       <Container component="main" maxWidth="sm" sx={{ mb: 4, backgroundColor: '#ffffff' }}>
-      <Paper variant="outlined" sx={{ 
-        my: { xs: 3, md: 6 }, 
-        p: { xs: 2, md: 3 },
-        backgroundColor: '#fcfdff', // lighter shade of AppBar color
-        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.1)' // soft shadow
+        <Paper variant="outlined" sx={{
+          my: { xs: 3, md: 6 },
+          p: { xs: 2, md: 3 },
+          backgroundColor: '#fcfdff', // lighter shade of AppBar color
+          boxShadow: '0 4px 8px 0 rgba(0,0,0,0.1)' // soft shadow
         }}>
 
-     <Typography component="h1" variant="h4" align="center" color="#1976D2">
+          <Typography component="h1" variant="h4" align="center" color="#1976D2">
             Free Health & Fitness Calculator
-     </Typography>
+          </Typography>
 
-     <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5, color: '#1976D2' }}>
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5, color: '#1976D2' }}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -83,14 +83,6 @@ export default function Checkout() {
           </Stepper>
           {activeStep === steps.length ? (
             <React.Fragment>
-              <Typography variant="h5" gutterBottom>
-                Thank you for your order.
-              </Typography>
-              <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
-                confirmation, and will send you an update when your order has
-                shipped.
-              </Typography>
             </React.Fragment>
           ) : (
             <React.Fragment>

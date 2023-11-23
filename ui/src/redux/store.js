@@ -21,8 +21,6 @@ const errorHandlingMiddleware = store => next => action => {
     return next(action);
   } catch (e) {
     console.error('Caught an exception!', e);
-    // Optionally dispatch a separate action for errors
-    // store.dispatch({ type: 'ERROR', payload: e });
     throw e; // re-throw the error
   }
 };
