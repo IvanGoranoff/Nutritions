@@ -15,14 +15,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { setUser } from '../redux/actions/userActions'; // Импортиране на setUser action
+import { setUser } from '../redux/actions/userActions';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
 
     const navigate = useNavigate();
-    const [error, setError] = useState(""); // Добавяне на състояние за грешки
+    const [error, setError] = useState("");
 
     const dispatch = useDispatch();
     const handleSubmit = async (event) => {
@@ -31,32 +31,24 @@ export default function SignIn() {
         const data = new FormData(event.currentTarget);
         const email = data.get('email');
         const username = data.get('username');
-        
+
         dispatch(setUser({ email, username }));
 
         navigate('/checkout');
 
         // try {
-        //     // Тук добавете вашата логика за вход
-        //     // Пример: изпращане на заявка към вашето API
-        //     const response = await fetch('YOUR_API_ENDPOINT', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({ email, username
-        //         }),
+
         //     });
 
         //     // if (response.ok) {
-        //     //     // Ако отговорът е успешен, пренасочете потребителя
+        //     //     // Ако отговорът е успешен
         //     //     navigate('/checkout');
         //     // } else {
-        //     //     // Ако има грешка, покажете съобщение
+        //     //     // Ако има грешка
         //     //     setError("Login failed. Please check your credentials.");
         //     // }
         // } catch (error) {
-        //     // Обработка на грешки при заявката
+        //  
         //     setError("An error occurred. Please try again later.");
         // }
     };
