@@ -6,14 +6,20 @@ import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { useSelector } from 'react-redux';
 
 export default function MealForm() {
     const [expandedCard, setExpandedCard] = useState(null);
+    const formData = useSelector(state => state.form.formData);
+    const user = useSelector(state => state.user.user);
+
 
     const handleExpand = (cardIndex) => {
         setExpandedCard(cardIndex === expandedCard ? null : cardIndex);
     };
 
+    console.log(user?.calories?.["Mild weight gain"]?.calory
+    )
     // Рандом данни за храни
     const foods = [
         "Пица",
@@ -42,7 +48,7 @@ export default function MealForm() {
             <Card style={{ marginBottom: '10px', width: '100%', paddingLeft: 10, paddingTop: 0 }}>
                 <CardContent style={{ paddingBottom: 16 }}>
                     <Grid item xs={12} style={{ display: 'flex', alignItems: 'center' }}>
-                        <h4 style={{ display: 'inline-block', verticalAlign: 'middle', marginBottom: 10 }}>  Maintain weight</h4>
+                        <h4 style={{ display: 'inline-block', verticalAlign: 'middle', marginBottom: 10 }}>  Maintain weight  {user?.calories?.["Mild weight gain"]?.calory} cal</h4>
                         <IconButton
                             className={expandedCard === 0 ? 'expandOpen' : 'expand'}
                             aria-expanded={expandedCard === 0}

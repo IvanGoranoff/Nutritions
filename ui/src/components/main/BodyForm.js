@@ -18,6 +18,7 @@ import Select from '@mui/material/Select';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateFormData, updateCalorieData } from '../../redux/actions/formActions';
 import { updateUserData, } from '../../redux/actions/userActions'; // ьImport updateCalorieData
+import { setCalculatedFlag } from '../../redux/actions/formActions';
 
 import axios from 'axios';
 import { Calories } from '../../requests';
@@ -76,7 +77,7 @@ export default function BodyForm() {
                 // Dispatching the entire response data
                 dispatch(updateUserData({ calories: response?.data?.goals }));
                 dispatch(updateCalorieData(calculatedCalories));
-
+                dispatch(setCalculatedFlag(true)); // Set the flag
                 setCalText(true);
             }
         } catch (error) {
@@ -84,6 +85,11 @@ export default function BodyForm() {
         }
 
     };
+
+    // Reset the flag if any form data changes
+    useEffect(() => {
+        dispatch(setCalculatedFlag(false));
+    }, [formData, dispatch]);
 
     // Dispatching form data
     const handleChange = (event) => {
