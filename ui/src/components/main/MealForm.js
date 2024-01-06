@@ -48,7 +48,7 @@ export default function MealForm() {
             <Card style={{ marginBottom: '10px', width: '100%', paddingLeft: 10, paddingTop: 0 }}>
                 <CardContent style={{ paddingBottom: 16 }}>
                     <Grid item xs={12} style={{ display: 'flex', alignItems: 'center' }}>
-                        <h4 style={{ display: 'inline-block', verticalAlign: 'middle', marginBottom: 10 }}>  Maintain weight  {user?.calories?.["Mild weight gain"]?.calory} cal</h4>
+                        <h4 style={{ display: 'inline-block', verticalAlign: 'middle', marginBottom: 10 }}>  Maintain weight  {user?.calories?.["maintain weight"]} cal</h4>
                         <IconButton
                             className={expandedCard === 0 ? 'expandOpen' : 'expand'}
                             aria-expanded={expandedCard === 0}
@@ -72,7 +72,7 @@ export default function MealForm() {
             <Card style={{ marginBottom: '10px', width: '100%', paddingLeft: 10, paddingTop: 0 }}>
                 <CardContent style={{ paddingBottom: 16 }}>
                     <Grid item xs={12} style={{ display: 'flex', alignItems: 'center' }}>
-                        <h4 style={{ display: 'inline-block', verticalAlign: 'middle', marginBottom: 10 }}>Weight gain</h4>
+                        <h4 style={{ display: 'inline-block', verticalAlign: 'middle', marginBottom: 10 }}>Weight gain {user?.calories?.["Mild weight gain"]?.calory} cal</h4>
                         <IconButton
                             className={expandedCard === 1 ? 'expandOpen' : 'expand'}
                             aria-expanded={expandedCard === 1}
@@ -96,7 +96,7 @@ export default function MealForm() {
             <Card style={{ marginBottom: '10px', width: '100%', paddingLeft: 10, paddingTop: 0 }}>
                 <CardContent style={{ paddingBottom: 16 }}>
                     <Grid item xs={12} style={{ display: 'flex', alignItems: 'center' }}>
-                        <h4 style={{ display: 'inline-block', verticalAlign: 'middle', marginBottom: 10 }}> Weight loss </h4>
+                        <h4 style={{ display: 'inline-block', verticalAlign: 'middle', marginBottom: 10 }}> Weight loss {user?.calories?.["Mild weight loss"]?.calory} cal</h4>
                         <IconButton
                             className={expandedCard === 2 ? 'expandOpen' : 'expand'}
                             aria-expanded={expandedCard === 2}
