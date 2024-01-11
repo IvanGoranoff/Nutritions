@@ -1,94 +1,72 @@
+import React, { useState, useEffect } from 'react';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Grid from '@mui/material/Grid';
-import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-
-const products = [
-  {
-    name: 'Product 1',
-    desc: 'A nice thing',
-    price: '$9.99',
-  },
-  {
-    name: 'Product 2',
-    desc: 'Another thing',
-    price: '$3.45',
-  },
-  {
-    name: 'Product 3',
-    desc: 'Something else',
-    price: '$6.51',
-  },
-  {
-    name: 'Product 4',
-    desc: 'Best thing of all',
-    price: '$14.11',
-  },
-  { name: 'Shipping', desc: '', price: 'Free' },
-];
-
-const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-const payments = [
-  { name: 'Card type', detail: 'Visa' },
-  { name: 'Card holder', detail: 'Mr John Smith' },
-  { name: 'Card number', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Expiry date', detail: '04/2024' },
-];
+import axios from 'axios';
 
 export default function Review() {
-  const selectedCalorieGoal = useSelector(state => state.user.selectedCalorieGoal);
+    const selectedCalorieGoal = useSelector(state => state.user.selectedCalorieGoal);
+    const [mealPlan, setMealPlan] = useState(null);
+    const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-      console.log('Selected Calorie Goal:', selectedCalorieGoal);
-  }, [selectedCalorieGoal]);
-  return (
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Order summary
-      </Typography>
-      <List disablePadding>
-        {products.map((product) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
-          </ListItem>
-        ))}
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $34.06
-          </Typography>
-        </ListItem>
-      </List>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Shipping
-          </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
-        </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Payment details
-          </Typography>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
+    useEffect(() => {
+        fetchMealPlanWeek();
+    }, [selectedCalorieGoal]); // Dependency on selectedCalorieGoal to refetch when it changes
+
+    const fetchMealPlanWeek = async () => {
+        // Ensure there's a selected calorie goal before fetching
+        if (selectedCalorieGoal) {
+            const username = "ivangoranoff5";
+            const hash = "95cbe9f9d7cc1ae0bcf24f000c6b4d62b5d0c21c";
+            const startDate = new Date().toISOString().split('T')[0]; // Use current date
+
+            try {
+                const response = await axios.get(`https://api.spoonacular.com/mealplanner/${username}/week/${startDate}`, {
+                    params: {
+                        hash: hash,
+                        apiKey: "e6d8ceb34d4c491592c77155c463f51a",
+                        targetCalories: selectedCalorieGoal.calory // Add targetCalories parameter
+                    }
+                });
+                setMealPlan(response.data.days);
+            } catch (error) {
+                console.error('Error fetching meal plan:', error);
+            }
+        }
+    };
+
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
+    return (
+        <div>
+            {mealPlan && mealPlan.map((day, index) => (
+                <Accordion 
+                    key={day.date} 
+                    expanded={expanded === `panel${index}`} 
+                    onChange={handleChange(`panel${index}`)}
+                >
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls={`panel${index}bh-content`}
+                        id={`panel${index}bh-header`}
+                    >
+                        <Typography>{day.day}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {day.items.map(item => (
+                            <div key={item.id}>
+                                <Typography variant="body1">{item.value.title}</Typography>
+                                {/* Additional details can be included here */}
+                            </div>
+                        ))}
+                    </AccordionDetails>
+                </Accordion>
             ))}
-          </Grid>
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+        </div>
+    );
 }
