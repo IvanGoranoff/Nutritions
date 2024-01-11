@@ -1,8 +1,9 @@
 // reducers/userReducer.js
-import { SET_USER, UPDATE_USER_DATA } from '../actions/userActions';
+import { SET_USER, UPDATE_USER_DATA,SET_CALORIE_GOAL } from '../actions/userActions';
 
 const initialState = {
-  user: {}
+  user: {},
+  selectedCalorieGoal: null,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -20,6 +21,11 @@ const userReducer = (state = initialState, action) => {
           ...action.payload
         }
       };
+      case SET_CALORIE_GOAL:
+        return {
+            ...state,
+            selectedCalorieGoal: action.payload,
+        };
     default:
       return state;
   }
