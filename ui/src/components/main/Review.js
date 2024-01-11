@@ -39,7 +39,7 @@ const payments = [
 ];
 
 export default function Review() {
-  const selectedCalorieGoal = useSelector(state => state.calorieGoal);
+  const selectedCalorieGoal = useSelector(state => state.user.selectedCalorieGoal);
 
   useEffect(() => {
       console.log('Selected Calorie Goal:', selectedCalorieGoal);
