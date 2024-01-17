@@ -17,7 +17,7 @@ export default function Review() {
         if (selectedCalorieGoal) {
             fetchMealPlanWeek();
         }
-    }, [selectedCalorieGoal]);
+    }, []);
 
     const fetchMealPlanWeek = async () => {
         const username = "ivangoranoff5";
