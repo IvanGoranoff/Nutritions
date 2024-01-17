@@ -105,8 +105,6 @@ width: 100%;
 }
 /* Article and Image Styles */
 article {
-  display: flex;
-  flex-direction: column;
   padding: 2rem;
   margin: 0 1rem;
   max-width: 300px;
