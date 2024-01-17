@@ -15,7 +15,7 @@ export default function Review() {
 
     useEffect(() => {
         fetchMealPlanWeek();
-    }, [selectedCalorieGoal]); // Dependency on selectedCalorieGoal to refetch when it changes
+    }, []); // Dependency on selectedCalorieGoal to refetch when it changes
 
     const fetchMealPlanWeek = async () => {
         // Ensure there's a selected calorie goal before fetching
