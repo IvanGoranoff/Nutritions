@@ -7,7 +7,7 @@ export default function Meal({ meal }) {
   useEffect(() => {
     axios.get(`https://api.spoonacular.com/recipes/${meal.id}/information`, {
       params: {
-        apiKey: 'cb1c464d94f142c08b156c5beddade8b',
+        apiKey: 'e6d8ceb34d4c491592c77155c463f51a',
         includeNutrition: false
       }
     })
@@ -45,6 +45,7 @@ export default function Meal({ meal }) {
       marginTop: '16px',
     },
     instructionItem: {
+      listStyle: 'none',
       marginBottom: '4px',
       color: '#666',
     },

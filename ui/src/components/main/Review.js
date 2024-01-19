@@ -26,7 +26,7 @@ export default function Review() {
         const startDate = new Date().toISOString().split('T')[0];
 
         try {
-            const response = await axios.get(`https://api.spoonacular.com/mealplanner/generate?apiKey=cb1c464d94f142c08b156c5beddade8b&timeFrame=week&targetCalories=${selectedCalorieGoal}`, {
+            const response = await axios.get(`https://api.spoonacular.com/mealplanner/generate?apiKey=e6d8ceb34d4c491592c77155c463f51a&timeFrame=week&targetCalories=${selectedCalorieGoal}`, {
             });
             setMealData(response.data);
 
