@@ -8,14 +8,15 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Meal from "./Meal";
 export default function Review() {
-    const selectedCalorieGoal = useSelector(state => state.user.selectedCalorieGoal);
+    const selectedCalorieGoal = useSelector(state => state.user.selectedCalorieGoal?.calory
+    );
     const [mealPlan, setMealPlan] = useState(null);
     const [expanded, setExpanded] = useState(false);
     const [mealData, setMealData] = useState(null);
-
     useEffect(() => {
         if (selectedCalorieGoal) {
             fetchMealPlanWeek();
+            console.log(selectedCalorieGoal)
         }
     }, []);
 
@@ -25,13 +26,10 @@ export default function Review() {
         const startDate = new Date().toISOString().split('T')[0];
 
         try {
-            const response = await axios.get(`https://api.spoonacular.com/mealplanner/${username}/week/${startDate}`, {
-                params: {
-                    hash: hash,
-                    apiKey: 'e6d8ceb34d4c491592c77155c463f51a'
-                }
+            const response = await axios.get(`https://api.spoonacular.com/mealplanner/generate?apiKey=cb1c464d94f142c08b156c5beddade8b&timeFrame=week&targetCalories=${selectedCalorieGoal}`, {
             });
-            setMealData(response.data.days);
+            setMealData(response.data);
+
         } catch (error) {
             console.error('Error fetching meal plan:', error);
         }
@@ -43,26 +41,36 @@ export default function Review() {
 
     return (
         <div>
-              {mealData && Object.entries(mealData).map(([dayName, dayData], index) => (
-              <Accordion 
-              key={dayName} 
-              expanded={expanded === `panel${index}`} 
-              onChange={handleChange(`panel${index}`)}
-          >
-              <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls={`panel${index}bh-content`}
-                  id={`panel${index}bh-header`}
-              >
-                  <Typography>{dayName}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                  {dayData.meals.map(meal => (
-                      <Meal key={meal.id} meal={meal} />
-                  ))}
-              </AccordionDetails>
-          </Accordion>
+            {mealData && Object.entries(mealData.week).map(([dayName, dayData], index) => (
+                <Accordion
+                    key={dayName}
+                    expanded={expanded === `panel${index}`}
+                    onChange={handleChange(`panel${index}`)}
+                >
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls={`panel${index}bh-content`}
+                        id={`panel${index}bh-header`}
+                    >
+                        <Typography>{dayName.charAt(0).toUpperCase() + dayName.slice(1)}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <div>
+                            <h1>Macros</h1>
+                            <ul>
+                                <li>Calories: {dayData.nutrients.calories.toFixed(0)}</li>
+                                <li>Carbohydrates: {dayData.nutrients.carbohydrates.toFixed(0)}</li>
+                                <li>Fat: {dayData.nutrients.fat.toFixed(0)}</li>
+                                <li>Protein: {dayData.nutrients.protein.toFixed(0)}</li>
+                            </ul>
+                        </div>
+                        {dayData.meals.map(meal => (
+                            <Meal key={meal.id} meal={meal} />
+                        ))}
+                    </AccordionDetails>
+                </Accordion>
             ))}
         </div>
     );
+
 }

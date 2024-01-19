@@ -1,15 +1,85 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function Meal({ meal }) {
+  const [image, setImage] = useState('');
+
+  useEffect(() => {
+    axios.get(`https://api.spoonacular.com/recipes/${meal.id}/information`, {
+      params: {
+        apiKey: 'cb1c464d94f142c08b156c5beddade8b',
+        includeNutrition: false
+      }
+    })
+      .then(response => {
+        setImage(response.data.image);
+      })
+      .catch(error => {
+        console.error("Error fetching image:", error);
+      });
+  }, [meal.id]);
+
+  // Define styles here
+  const styles = {
+    meal: {
+      backgroundColor: '#f8f8f8',
+      border: '1px solid #ddd',
+      borderRadius: '8px',
+      padding: '16px',
+      margin: '16px 0',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    },
+    title: {
+      color: '#333',
+      fontSize: '24px',
+      marginBottom: '8px',
+    },
+    image: {
+      maxWidth: '100%',
+      height: 'auto',
+      borderRadius: '4px',
+    },
+    instructions: {
+      listStyle: 'none',
+      padding: 0,
+      marginTop: '16px',
+    },
+    instructionItem: {
+      marginBottom: '4px',
+      color: '#666',
+    },
+    link: {
+      display: 'inline-block',
+      marginTop: '12px',
+      backgroundColor: '#007bff',
+      color: 'white',
+      padding: '8px 16px',
+      borderRadius: '4px',
+      textDecoration: 'none',
+      transition: 'background-color 0.3s ease',
+    }
+  };
+
   return (
-    <article>
-      <h1>{meal.title}</h1>
-      {meal.imageUrl ? <img src={meal.imageUrl} alt={meal.title} /> : <p>Image not available</p>}
-      <ul className="instructions">
-        <li>Preparation time: {meal.readyInMinutes} minutes</li>
-        <li>Number of servings: {meal.servings}</li>
+    <article style={styles.meal}>
+      <h1 style={styles.title}>{meal.title}</h1>
+      <img
+        src={image || meal.imageUrl || 'default_image.jpg'}
+        alt={meal.title}
+        style={styles.image}
+      />
+      <ul style={styles.instructions}>
+        <li style={styles.instructionItem}>Preparation time: {meal.readyInMinutes} minutes</li>
+        <li style={styles.instructionItem}>Number of servings: {meal.servings}</li>
       </ul>
-      <a href={meal.sourceUrl} rel="noreferrer" target="_blank">Go to Recipe</a>
+      <a
+        href={meal.sourceUrl}
+        target="_blank"
+        rel="noreferrer"
+        style={styles.link}
+      >
+        Go to Recipe
+      </a>
     </article>
   );
 }

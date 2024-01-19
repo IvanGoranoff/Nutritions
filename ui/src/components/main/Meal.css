@@ -1,0 +1,48 @@
+/* Meal.css */
+.meal {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .meal-title {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  
+  .meal-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  .meal-instructions {
+    list-style: none;
+    padding: 0;
+    margin-top: 16px;
+  }
+  
+  .meal-instructions li {
+    margin-bottom: 4px;
+    color: #666;
+  }
+  
+  .meal-link {
+    display: inline-block;
+    margin-top: 12px;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .meal-link:hover {
+    background-color: #0056b3;
+  }
+  
