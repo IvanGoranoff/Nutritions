@@ -100,7 +100,7 @@ export default function Checkout() {
                                     sx={{ mt: 3, ml: 1, backgroundColor: '#1976D2', color: 'white' }}
                                     disabled={activeStep === 0 && !isCalculated} // Disable if not calculated at step 0
                                 >
-                                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                                    {activeStep === steps.length - 1 ? 'Download' : 'Next'}
                                 </Button>
 
                             </Box>
